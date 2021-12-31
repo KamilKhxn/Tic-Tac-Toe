@@ -1,9 +1,8 @@
 let divPressed = undefined;
-let playerTurn = 0;
+let playerTurn = 0; // might not use
 
-const main = () => {
+const gameControl = () => { // maybe turn this into module
 
-    const btn = document.querySelector('.restart')
     document.querySelectorAll('.gameSquare').forEach(item => {
         item.addEventListener('click', () => {
             // run player and determine which div was pressed
@@ -23,10 +22,13 @@ const main = () => {
         })
     })
 
+    const btn = document.querySelector('.restart') // restart button
     btn.addEventListener('click', () => {
-        console.log(gameBoard.gameArr);
-        gameBoard.addCharacter;
-        playerTurn++;
+        //gameBoard.clear  ---- clearing and resetting all data -- 'x' and 'o' in browser, array with elements in them
+        // displayController -- back to og message
+        // clear player arrays
+
+        // console.log(gameBoard.gameArr);
         // console.log(gameBoard.checkWinner);
     });
     // create a counter to determine whose turn it is where it is restricted by the numbdr of divs or if somebody wins
@@ -83,15 +85,11 @@ const gameBoard = (()/*divPressed  ,playerTurn*/ => {
     function checkWinner() {
         // TODO
         // create an array which tracks 'x' and 'o' locations => then use switch case to determine winning cases
+        // switch case for all winning situations and defualt would be a draw
     }
 
 
-    //event listner for all divs => .forEach
 
-    // get the id of the div clicked
-
-    // in the array add an 'x' or 'o' to the corespondiing id index
-    //interact with dom and add 'x' or 'o' onto div so person can see
     // function to check if there is a winner
 
     return { gameArr, addCharacter, checkWinner, };
@@ -99,6 +97,8 @@ const gameBoard = (()/*divPressed  ,playerTurn*/ => {
 
 //module
 const displayController = (() => {
+    // TODO
+
     return {
 
     };
@@ -116,4 +116,4 @@ const displayController = (() => {
 
 
 
-main();
+gameControl();
