@@ -9,6 +9,7 @@ font-size: 2rem;
     border: 3px solid #CE4E41;
 } */
 .title {
+    margin-top: 1rem;
     text-align: center;
 
 }
@@ -67,11 +68,12 @@ font-size: 2rem;
     height: 2rem;
     width: 8rem;
     font-size: 0.7rem;
-    margin-top: 0.5rem;
+    margin-top: 1.5rem;
     border-radius: 4%;
     border: solid 2px black;
     color: black;
     background-color: cyan;
+
 
 }
 .letter{
