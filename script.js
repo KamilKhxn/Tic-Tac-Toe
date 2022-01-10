@@ -11,14 +11,37 @@ const gameControl = () => { // maybe turn this into module
     document.querySelectorAll('.gameSquare').forEach(item => {
         item.addEventListener('click', () => {
             divPressed = item.id
-            if (numOfMoves <= 9 && gameBoard.checkWinner() !== true) {
-                gameBoard.addCharacter(divPressed, kamil.marker(numOfMoves), winner);
+
+
+
+            if (/*numOfMoves <= 9 &&*/ gameBoard.checkWinner() !== true) {
+                gameBoard.addCharacter(divPressed, kamil.marker(numOfMoves));
                 displayController.setMessage(kamil.marker(numOfMoves));
+
+                // checking if either player has won
+                gameBoard.checkDraw(numOfMoves);
                 gameBoard.checkWinner();
-                console.log('main game arr checking: ' + gameBoard.gameArr); // testing
-                // console.log(gameBoard.markerArr); // testing
-                console.log('main check ' + winner);
-                console.log(gameBoard.checkWinner() + ' new check')
+                console.log(numOfMoves);
+                console.log(winner);
+
+
+
+
+
+                // console.log('main game arr checking: ' + gameBoard.gameArr); // testing
+                // // console.log(gameBoard.markerArr); // testing
+                // console.log('main check ' + winner);
+                // console.log(gameBoard.checkWinner() + ' new check')
+            }
+            else if (numOfMoves > 9 && gameBoard.checkWinner() !== true) {
+                gameBoard.checkDraw(numOfMoves);
+                console.log('else was ran');
+
+            }
+
+            if (numOfMoves > 9 && gameBoard.checkWinner() !== true) {
+                gameBoard.checkDraw(numOfMoves);
+                console.log('new if worked!')
             }
             // else if (playerWon !== undefined) {
 
@@ -54,13 +77,13 @@ const gameBoard = (() => {
     let markerArr = new Array(9).fill(0);
     // let markerArr = [];
     // let winner = false;
-    let thing = null;
+    // let thing = null;
 
 
 
     // create cont board that runs addCharacter then checkWinner
 
-    const addCharacter = (divPressed, marker, thing) => {
+    const addCharacter = (divPressed, marker) => {
 
         if (gameArr[divPressed] === 0) {
             gameArr[divPressed] = divPressed;
@@ -72,9 +95,10 @@ const gameBoard = (() => {
             markerArr[divPressed] = marker;
             numOfMoves++;
 
+
             // console.log('after: ' + numOfMoves); // testing
             console.log(' marker array' + markerArr);
-            console.log('checking' + thing);
+            // console.log('checking' + thing);
         }
     }
 
@@ -82,6 +106,7 @@ const gameBoard = (() => {
     //     // might not be needed
     // }
     function checkWinner() {
+        // REDUCED REDUNDANT CODE
 
         // [0,1,2]
         // [3,4,5]
@@ -129,7 +154,15 @@ const gameBoard = (() => {
             // return winner;
         }
         return winner;
-        ;
+
+    }
+    function checkDraw(numOfMoves) {
+        if (numOfMoves === 10 && gameBoard.checkWinner() === false) {
+            displayController.setDraw();
+            // alert('its a draw');
+            // console.log('its a draw');
+        }
+
     }
 
     return {
@@ -137,6 +170,7 @@ const gameBoard = (() => {
         addCharacter,
         checkWinner,
         markerArr,
+        checkDraw,
     };
 })();
 
@@ -146,6 +180,10 @@ const displayController = (() => {
     console.log('display was run');
     let displayMessage = document.querySelector('.message');
     const setMessage = (marker) => {
+
+        // REDUCED REDUNDANT CODE
+
+
         // if (marker === 'X') {
         //     displayMessage.textContent = 'Player X\'s turn';
         // }
@@ -159,12 +197,15 @@ const displayController = (() => {
     }
     const setWinner = marker => {
         displayMessage.textContent = `Player ${marker} is the winner!`;
-
+    }
+    const setDraw = () => {
+        displayMessage.textContent = `It's a draw!`;
     }
 
     return {
         setMessage,
         setWinner,
+        setDraw,
     };
 })();
 
