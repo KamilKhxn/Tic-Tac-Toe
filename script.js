@@ -1,39 +1,28 @@
 let numOfMoves = 1;
 let winner = false;
+// playerWon = undefined;
+
 
 const gameControl = () => { // maybe turn this into module
-
-
-
-    // FINAL WAY TO GET WINNER BOOLEAN
-    // => CONVERT GAMECONTROL INTO A MODULE AND RETURN IT
-    // MAKE FUNCTIONS FOR GETTING THE DIV AND RESTART BUTTON MAKING IT EASIER TO RESTRICT 
-    // BUT RESTRICTING WAS NEVER THE PROBLEM
-    // GETTING THE BOOLEAN BACK INTO THE MAIN METHOD IS THE DIFFICULT PART
-
-
-
-
-
-
-
     let divPressed = undefined;
-    // let winner = false;
     const kamil = player();
-
 
     // getting corresponding div
     document.querySelectorAll('.gameSquare').forEach(item => {
         item.addEventListener('click', () => {
             divPressed = item.id
-            if (numOfMoves <= 9 && winner !== true) {
+            if (numOfMoves <= 9 && gameBoard.checkWinner() !== true) {
                 gameBoard.addCharacter(divPressed, kamil.marker(numOfMoves), winner);
                 displayController.setMessage(kamil.marker(numOfMoves));
-                gameBoard.checkWinner(winner);
+                gameBoard.checkWinner();
                 console.log('main game arr checking: ' + gameBoard.gameArr); // testing
                 // console.log(gameBoard.markerArr); // testing
                 console.log('main check ' + winner);
+                console.log(gameBoard.checkWinner() + ' new check')
             }
+            // else if (playerWon !== undefined) {
+
+            // }
 
         })
     })
@@ -92,7 +81,7 @@ const gameBoard = (() => {
     // function checkEmpty() {
     //     // might not be needed
     // }
-    function checkWinner(thing) {
+    function checkWinner() {
 
         // [0,1,2]
         // [3,4,5]
@@ -100,7 +89,7 @@ const gameBoard = (() => {
 
         if (
             // vertical cases
-            markerArr[0] === 'X' && markerArr[3] === 'X' && markerArr[9] === 'X' ||
+            markerArr[0] === 'X' && markerArr[3] === 'X' && markerArr[6] === 'X' ||
             markerArr[1] === 'X' && markerArr[4] === 'X' && markerArr[7] === 'X' ||
             markerArr[2] === 'X' && markerArr[5] === 'X' && markerArr[8] === 'X' ||
             // horizontal case ||
@@ -112,12 +101,15 @@ const gameBoard = (() => {
             markerArr[2] === 'X' && markerArr[4] === 'X' && markerArr[6] === 'X') {
 
             console.log('Player X is the Winner!');
-            thing = true;
-            console.log(thing);
+            // thing = true;
+            // console.log(thing);
+            winner = true
+            // playerWon = 'X';
+            displayController.setWinner('X');
             // return winner;
         }
         if (
-            markerArr[0] === 'O' && markerArr[3] === 'O' && markerArr[9] === 'O' ||
+            markerArr[0] === 'O' && markerArr[3] === 'O' && markerArr[6] === 'O' ||
             markerArr[1] === 'O' && markerArr[4] === 'O' && markerArr[7] === 'O' ||
             markerArr[2] === 'O' && markerArr[5] === 'O' && markerArr[8] === 'O' ||
             // horizontal case
@@ -128,11 +120,16 @@ const gameBoard = (() => {
             markerArr[0] === 'O' && markerArr[4] === 'O' && markerArr[8] === 'O' ||
             markerArr[2] === 'O' && markerArr[4] === 'O' && markerArr[6] === 'O') {
             console.log('Player O is the Winner!');
-            thing = true;
-            console.log(thing);
+            // thing = true;
+            // console.log(thing);
+            winner = true
+            // playerWon = 'X';
+            displayController.setWinner('O');
+
             // return winner;
         }
-        return thing;
+        return winner;
+        ;
     }
 
     return {
@@ -149,17 +146,25 @@ const displayController = (() => {
     console.log('display was run');
     let displayMessage = document.querySelector('.message');
     const setMessage = (marker) => {
-        if (marker === 'X') {
-            displayMessage.textContent = 'Player X\'s turn';
-        }
-        else if (marker === 'O') {
-            displayMessage.textContent = 'Player O\'s turn';
+        // if (marker === 'X') {
+        //     displayMessage.textContent = 'Player X\'s turn';
+        // }
+        // else if (marker === 'O') {
+        //     displayMessage.textContent = 'Player O\'s turn';
 
-        }
+        // }
+        displayMessage.textContent = `Player ${marker}'s turn`;
+
+
+    }
+    const setWinner = marker => {
+        displayMessage.textContent = `Player ${marker} is the winner!`;
+
     }
 
     return {
         setMessage,
+        setWinner,
     };
 })();
 
