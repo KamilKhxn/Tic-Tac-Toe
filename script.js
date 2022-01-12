@@ -1,59 +1,69 @@
 let numOfMoves = 1;
 let winner = false;
-// playerWon = undefined;
 
 
-const gameControl = () => { // maybe turn this into module
+const gameControl = () => {
     let divPressed = undefined;
     const kamil = player();
 
     // getting corresponding div
     document.querySelectorAll('.gameSquare').forEach(item => {
         item.addEventListener('click', () => {
+            console.log(numOfMoves)
+            console.log('div pressed')
+
             divPressed = item.id
+            console.log('*******');
+            console.log(divPressed);
+            console.log(' moves = ' + numOfMoves);
+            console.log('winner :' + winner);
+            console.log('marker array: ' + gameBoard.markerArr)
 
 
 
-            if (/*numOfMoves <= 9 &&*/ gameBoard.checkWinner() !== true) {
+            if (numOfMoves <= 9 && gameBoard.checkWinner() !== true) {
                 gameBoard.addCharacter(divPressed, kamil.marker(numOfMoves));
                 displayController.setMessage(kamil.marker(numOfMoves));
-
-                // checking if either player has won
-                gameBoard.checkDraw(numOfMoves);
                 gameBoard.checkWinner();
-                console.log(numOfMoves);
-                console.log(winner);
 
 
 
 
+                const btn = document.querySelector('.restart')
+                btn.addEventListener('click', () => {
 
+                    gameBoard.restartBtn();
+                    // displayController.setMessage(kamil.marker(numOfMoves));
+
+
+                });
                 // console.log('main game arr checking: ' + gameBoard.gameArr); // testing
                 // // console.log(gameBoard.markerArr); // testing
                 // console.log('main check ' + winner);
                 // console.log(gameBoard.checkWinner() + ' new check')
             }
-            else if (numOfMoves > 9 && gameBoard.checkWinner() !== true) {
-                gameBoard.checkDraw(numOfMoves);
-                console.log('else was ran');
+            // else if (numOfMoves > 9 && gameBoard.checkWinner() !== true) {
+            //     gameBoard.checkDraw(numOfMoves);
+            //     // console.log('else was ran');
 
-            }
+            // }
 
             if (numOfMoves > 9 && gameBoard.checkWinner() !== true) {
                 gameBoard.checkDraw(numOfMoves);
-                console.log('new if worked!')
+                // console.log('new if worked!')
             }
-            // else if (playerWon !== undefined) {
-
-            // }
 
         })
     })
 
-    // // restart button
+    // restart button
     // const btn = document.querySelector('.restart')
     // btn.addEventListener('click', () => {
-    //     //  TODO    
+
+    //     gameBoard.restartBtn();
+    //     // displayController.setMessage(kamil.marker(numOfMoves));
+
+
     // });
 
 } // end of gameControl()
@@ -73,31 +83,29 @@ const gameBoard = (() => {
     const sq8 = document.getElementById('8');
 
     let query = [sq0, sq1, sq2, sq3, sq4, sq5, sq6, sq7, sq8]
-    let gameArr = new Array(9).fill(0);
+    // let gameArr = new Array(9).fill(0);
     let markerArr = new Array(9).fill(0);
-    // let markerArr = [];
-    // let winner = false;
-    // let thing = null;
-
 
 
     // create cont board that runs addCharacter then checkWinner
 
     const addCharacter = (divPressed, marker) => {
 
-        if (gameArr[divPressed] === 0) {
-            gameArr[divPressed] = divPressed;
+        if (markerArr[divPressed] === 0) {
+            markerArr[divPressed] = marker;
+            displayController.setMessage(marker);
             query[divPressed].textContent = marker;
             query[divPressed].classList.add('letter');
-            displayController.setMessage(marker);
+            console.log(marker + 'marker in addcharacter')
+            console.log(marker + 'marker in addcharacter')
 
             // console.log('initial: ' + numOfMoves); // testing
-            markerArr[divPressed] = marker;
+            // markerArr[divPressed] = marker;/
             numOfMoves++;
 
 
             // console.log('after: ' + numOfMoves); // testing
-            console.log(' marker array' + markerArr);
+            // console.log(' marker array' + markerArr);
             // console.log('checking' + thing);
         }
     }
@@ -125,13 +133,13 @@ const gameBoard = (() => {
             markerArr[0] === 'X' && markerArr[4] === 'X' && markerArr[8] === 'X' ||
             markerArr[2] === 'X' && markerArr[4] === 'X' && markerArr[6] === 'X') {
 
-            console.log('Player X is the Winner!');
+            // console.log('Player X is the Winner!');
             // thing = true;
             // console.log(thing);
             winner = true
             // playerWon = 'X';
             displayController.setWinner('X');
-            // return winner;
+            return winner;
         }
         if (
             markerArr[0] === 'O' && markerArr[3] === 'O' && markerArr[6] === 'O' ||
@@ -144,14 +152,14 @@ const gameBoard = (() => {
             // diagonal case
             markerArr[0] === 'O' && markerArr[4] === 'O' && markerArr[8] === 'O' ||
             markerArr[2] === 'O' && markerArr[4] === 'O' && markerArr[6] === 'O') {
-            console.log('Player O is the Winner!');
+            // console.log('Player O is the Winner!');
             // thing = true;
             // console.log(thing);
             winner = true
             // playerWon = 'X';
             displayController.setWinner('O');
 
-            // return winner;
+            return winner;
         }
         return winner;
 
@@ -164,20 +172,45 @@ const gameBoard = (() => {
         }
 
     }
+    function restartBtn() {
+        numOfMoves = 1;
+        winner = false;
+        // markerArr.splice(0, markerArr.length);
+        markerArr = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+        console.log('restart button pressed!');
+        console.log(markerArr);
+        console.log(winner);
+        console.log(numOfMoves);
+
+        // document.querySelectorAll('.gameSquare').forEach(item => { });
+        for (let i = 0; i < 10; i++) {
+            query[i].innerHTML = '';
+            // query[i].classList.remove('letter');
+
+
+        }
+        // displayController.setMessage(kamil.marker(numOfMoves));
+
+
+        // return gameControl();
+
+
+    }
 
     return {
-        gameArr,
+        // gameArr,
         addCharacter,
         checkWinner,
         markerArr,
         checkDraw,
+        restartBtn,
     };
 })();
 
 //module
 const displayController = (() => {
     // TODO
-    console.log('display was run');
+    // console.log('display was run');
     let displayMessage = document.querySelector('.message');
     const setMessage = (marker) => {
 
@@ -192,6 +225,7 @@ const displayController = (() => {
 
         // }
         displayMessage.textContent = `Player ${marker}'s turn`;
+        console.log(marker + 'setmessafe')
 
 
     }
