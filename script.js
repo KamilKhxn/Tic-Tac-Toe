@@ -7,30 +7,28 @@ const gameControl = () => {
 
     document.querySelectorAll('.gameSquare').forEach(item => {
         item.addEventListener('click', () => {
-
-            // console.log(numOfMoves)
-            // console.log('div pressed')
             divPressed = item.id
-            // console.log('*******');
-            // console.log(divPressed);
-            // console.log(' moves = ' + numOfMoves);
-            // console.log('winner :' + winner);
+
+            // //  TESTING CASES
+            // console.log('***TESTING***')
+            // console.log('the number of moves is: ' + numOfMoves);
+            // console.log('The winner is:' + gameBoard.checkWinner());
+            // // make markerArr in scope by adding it to the returns in gameBoard
             // console.log('marker array: ' + gameBoard.markerArr)
 
             if (numOfMoves <= 9 && gameBoard.checkWinner() !== true) {
-
                 gameBoard.addCharacter(divPressed, gamer.marker(numOfMoves));
                 displayController.setMessage(gamer.marker(numOfMoves));
                 gameBoard.checkWinner();
 
+                // restart button
                 const btn = document.querySelector('.restart')
                 btn.addEventListener('click', () => {
-
                     gameBoard.restartBtn();
-                    // displayController.setMessage(gamer.marker(numOfMoves));
                 });
-            }
+            } // end of if
 
+            // checking for draw
             if (numOfMoves > 9 && gameBoard.checkWinner() !== true) {
                 gameBoard.checkDraw(numOfMoves);
             }
@@ -38,7 +36,6 @@ const gameControl = () => {
     })
 } // end of gameControl()
 
-// module
 const gameBoard = (() => {
 
     // dom elements for grid
@@ -55,12 +52,11 @@ const gameBoard = (() => {
     let query = [sq0, sq1, sq2, sq3, sq4, sq5, sq6, sq7, sq8];
     let markerArr = [0, 0, 0, 0, 0, 0, 0, 0, 0];
 
+    // adds 'X' or 'O' to the gameboard on browser and markerArr
     const addCharacter = (divPressed, marker) => {
-
         if (markerArr[divPressed] === 0) {
             markerArr[divPressed] = marker;
             query[divPressed].textContent = marker;
-            query[divPressed].classList.add('letter');
             numOfMoves++;
         }
     }
@@ -103,11 +99,9 @@ const gameBoard = (() => {
             displayController.setWinner('O');
         }
         return winner;
-
     }
 
     const checkDraw = numOfMoves => {
-
         if (numOfMoves === 10 && gameBoard.checkWinner() === false) {
             displayController.setDraw();
         }
@@ -119,11 +113,13 @@ const gameBoard = (() => {
         markerArr = [0, 0, 0, 0, 0, 0, 0, 0, 0];
         displayController.setMessage('X');
 
-        console.log('restart button pressed!');
-        console.log(markerArr);
-        console.log(winner);
-        console.log(numOfMoves);
+        // console.log('***RESTART TESTING***')
+        // console.log('restart button pressed!');
+        // console.log(markerArr);
+        // console.log(winner);
+        // console.log(numOfMoves);
 
+        // iterates through query arr and removes all 'X' and 'O'
         for (let i = 0; i < 10; i++) {
             query[i].innerHTML = '';
         }
@@ -137,9 +133,7 @@ const gameBoard = (() => {
     };
 })();
 
-//module
 const displayController = (() => {
-
     let displayMessage = document.querySelector('.message');
 
     const setMessage = (marker) => {
@@ -162,7 +156,7 @@ const displayController = (() => {
 })();
 
 const player = () => {
-
+    // identifies current players marker ('X' or 'O')
     const marker = numOfMoves => {
         let item = null;
         if (numOfMoves % 2 === 0) {
